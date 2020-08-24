@@ -1,19 +1,19 @@
 class Solution {
 public:
     void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
-        vector<int> merged(n + m);
-        int i = 0, j = 0, t = 0;
-        while(j < n && i < m)
+        int i = 0, j = 0, t = m;
+        while(i < (m + n) && j < n)
         {
-            if(nums1[i] < nums2[j])
-                merged[t++] = nums1[i++];
+            if(nums1[i] >= nums2[j])
+            {
+                nums1.insert(nums1.begin() + i++, nums2[j++]);
+                nums1.pop_back();
+                t++;
+            }
+            else if(nums1[i] < nums2[j] && i < t)
+                i++;
             else
-                merged[t++] = nums2[j++];
+                nums1[i++] = nums2[j++];
         }
-        while(i < m)
-            merged[t++] = nums1[i++];
-        while(j < n)
-            merged[t++] = nums2[j++];
-        nums1 = merged;
     }
 };
