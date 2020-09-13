@@ -2,7 +2,7 @@ class Solution {
 public:
     vector<string> uncommonFromSentences(string A, string B) {
         vector<string> ans;
-        unordered_set<string> s, deleted;
+        unordered_map<string, int> m;
         int i = 0, a = A.length(), b = B.length();
         while(i < a)
         {
@@ -12,16 +12,10 @@ public:
             string word;
             for(int j = temp; j < i; j++)
                 word += A[j];
-            if(s.find(word) != s.end())
-            {
-                s.erase(word);
-                deleted.insert(word);
-            }
+            if(m.find(word) != m.end())
+                m[word]++;
             else
-            {
-                if(deleted.find(word) == deleted.end())
-                    s.insert(word);
-            }
+                m[word]++;
             i++;
         }
         i = 0;
@@ -33,20 +27,17 @@ public:
             string word;
             for(int j = temp; j < i; j++)
                 word += B[j];
-            if(s.find(word) != s.end())
-            {
-                s.erase(word);
-                deleted.insert(word);
-            }
+            if(m.find(word) != m.end())
+                m[word]++;
             else
-            {
-                if(deleted.find(word) == deleted.end())
-                    s.insert(word);
-            }
+                m[word]++;
             i++;
         }
-        for(auto i : s)
-            ans.push_back(i);
+        for(auto i : m)
+        {
+            if(i.second == 1)
+                ans.push_back(i.first);
+        }
         return ans;
     }
 };
