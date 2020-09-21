@@ -11,75 +11,28 @@
 class Solution {
 public:
     ListNode* reverseBetween(ListNode* head, int m, int n) {
-        if(m == n)
-        return head;
-    
+        ListNode *ptr = head, *prevM = NULL;
         int ctr = 1;
-        ListNode* current;
-        ListNode* temp = head;
-        ListNode* prev;
-        ListNode* prevNode;
-        ListNode* Bnode;
-
-        while(temp != NULL)
+        while(ctr < m)
         {
-
-            if(m == 1 && ctr == 1)
-            {
-                prev = temp;
-                prevNode = head;
-                Bnode = temp;
-                temp = temp->next;
-                ctr++;
-                continue;
-            }
-
-            if(ctr == m - 1)
-            {
-                prevNode = temp;
-                temp = temp->next;
-                ctr++;
-                continue;
-            }
-
-            if(ctr < m - 1)
-            {
-                temp = temp->next;
-                ctr++;
-                continue;
-            }
-
-            if(ctr == n + 1)
-            {
-                break;
-            }
-
-            if(ctr == m)
-            {
-                Bnode = temp;
-                prev = temp;
-                temp = temp->next;
-                ctr++;
-                continue;
-            }
-
-            current = temp;
-            temp = temp->next;
+            prevM = ptr;
+            ptr = ptr->next;
             ctr++;
-            current->next = prev;
-            prev = current;
         }
-        
-        if(m != 1)
+        ListNode *next = ptr->next, *prev, *temp = ptr;
+        while(ctr < n)
         {
-            Bnode->next = temp;
-            prevNode->next = prev;
+            prev = ptr;
+            ptr = next;
+            next = ptr->next;
+            ptr->next = prev;
+            ctr++;
         }
         if(m == 1)
-        {
-            head = prev;
-            prevNode->next = temp;
-        }
+            head = ptr;
+        else
+            prevM->next = ptr;
+        temp->next= next;
         return head;
     }
 };
